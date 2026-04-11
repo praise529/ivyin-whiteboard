@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
 
 :root {
     --Font: "Outfit", sans-serif;
@@ -27,13 +27,11 @@ body {
     background: var(--White);
 }
 
-
 @keyframes Spin-Around {
     100% {
         rotate: 360deg;
     }
 }
-
 
 @media (max-width: 511px) {
     button {
@@ -48,14 +46,27 @@ body {
         scale: 1.05;
         background: hsl(from var(--Light-Main) h s calc(l - 5));
     }
-    
+
     button:hover .Plus {
         animation: Spin-Around 0.75s var(--Transition);
     }
+
+    .Whiteboard-Area .Whiteboard-Options .Whiteboard-Option:hover {
+        background: hsl(from var(--White) h calc(s - 20) calc(l - 5) / 0.4);
+    }
 }
 
-
-h1, h2, h3, h4, h5, h6, p, li, label, i, button {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+li,
+label,
+i,
+button {
     color: var(--Dark-Colour);
 }
 
@@ -79,7 +90,6 @@ button.Primary {
     background: var(--Light-Main);
 }
 
-
 /* button */
 
 .Whiteboard-Font {
@@ -89,15 +99,12 @@ button.Primary {
     color: var(--Dark-Colour);
 }
 
-
-
 .Top-Bar {
     display: flex;
     padding: 2rem;
     flex-direction: row;
     justify-content: space-between;
 }
-
 
 .All-Whiteboards {
     display: grid;
@@ -123,12 +130,9 @@ button.Primary {
     border-radius: var(--Special-Radius);
 }
 
-
 .Spin {
     animation: Spin-Around 1s ease-in-out infinite;
 }
-
-
 
 .Whiteboard-Area {
     display: flex;
@@ -158,7 +162,6 @@ button.Primary {
     color: var(--Dark-Colour);
 }
 
-
 .Whiteboard-Area .Whiteboard-Options {
     left: 50%;
     width: 50%;
@@ -168,7 +171,22 @@ button.Primary {
     align-items: center;
     padding: 1.5rem 2rem;
     border: var(--Outline);
-    bottom: 0; margin: 2rem;
+    bottom: 0;
+    margin: 2rem;
     justify-content: center;
     border-radius: var(--Special-Radius);
+}
+.Whiteboard-Area .Whiteboard-Options .Whiteboard-Option {
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0.75rem;
+    margin-right: 2rem;
+    border-radius: 50%;
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    transition: var(--Transition);
+}
+.Whiteboard-Area .Whiteboard-Options .Whiteboard-Option:active {
+    scale: 0.8;
 }
