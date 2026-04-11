@@ -85,6 +85,9 @@ button.Primary {
 .Whiteboard-Font {
     font-family: var(--Whiteboard-Font);
 }
+.Dark {
+    color: var(--Dark-Colour);
+}
 
 
 
@@ -117,5 +120,55 @@ button.Primary {
     margin-bottom: 0.5rem;
     border: var(--Outline);
     background: var(--Foreground);
+    border-radius: var(--Special-Radius);
+}
+
+
+.Spin {
+    animation: Spin-Around 1s ease-in-out infinite;
+}
+
+
+
+.Whiteboard-Area {
+    display: flex;
+    height: 100vh;
+    height: 100dvh;
+    background: white;
+}
+.Whiteboard-Area .Whiteboard-Top {
+    gap: 1rem;
+    display: flex;
+    margin: 2rem;
+    width: max-content;
+    height: max-content;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border: var(--Outline);
+    justify-content: center;
+    border-radius: var(--Special-Radius);
+}
+
+.Whiteboard-Area .Whiteboard-Top .Whiteboard-Name {
+    border: none;
+    width: 15rem;
+    background: none;
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: var(--Dark-Colour);
+}
+
+
+.Whiteboard-Area .Whiteboard-Options {
+    left: 50%;
+    width: 50%;
+    display: flex;
+    position: fixed;
+    translate: -50% 0;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border: var(--Outline);
+    bottom: 0; margin: 2rem;
+    justify-content: center;
     border-radius: var(--Special-Radius);
 }
