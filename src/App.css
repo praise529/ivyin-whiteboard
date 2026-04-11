@@ -190,3 +190,31 @@ button.Primary {
 .Whiteboard-Area .Whiteboard-Options .Whiteboard-Option:active {
     scale: 0.8;
 }
+
+.Sticky-Note {
+    cursor: grab;
+    padding: 2rem;
+    max-width: 10rem;
+    font-weight: bold;
+    width: 100%;
+    height: max-content;
+    min-height: 10rem;
+    display: inline-block;
+    border-radius: 0 0 1rem;
+    corner-shape: round round bevel;
+    font-family: var(--Whiteboard-Font);
+    background: hsl(from red h s calc(l + 10) / 0.4);
+}
+.Sticky-Note .Text {
+    cursor: text;
+    width: 80%;
+    border: none;
+    resize: none;
+    height: auto;
+    overflow: hidden;
+    background: none;
+    font-weight: bold;
+    font-size: 1.5rem;
+    text-align: center;
+    color: currentColor;
+}
