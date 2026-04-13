@@ -54,6 +54,9 @@ body {
     .Whiteboard-Area .Whiteboard-Options .Whiteboard-Option:hover {
         background: hsl(from var(--White) h calc(s - 20) calc(l - 5) / 0.4);
     }
+    .Whiteboard-Area .Whiteboard-Options .Whiteboard-Option.Active:hover {
+        background: hsl(from var(--Main) h calc(s - 15) calc(l - 2) / 0.2);
+    }
 }
 
 h1,
@@ -138,7 +141,7 @@ button.Primary {
     display: flex;
     height: 100vh;
     height: 100dvh;
-    background: white;
+    background: none;
 }
 .Whiteboard-Area .Whiteboard-Top {
     gap: 1rem;
@@ -150,7 +153,9 @@ button.Primary {
     padding: 1.5rem 2rem;
     border: var(--Outline);
     justify-content: center;
+    background: var(--White);
     border-radius: var(--Special-Radius);
+    box-shadow: 0 0 10px hsla(0, 0%, 0%, 20%);
 }
 
 .Whiteboard-Area .Whiteboard-Top .Whiteboard-Name {
@@ -164,17 +169,19 @@ button.Primary {
 
 .Whiteboard-Area .Whiteboard-Options {
     left: 50%;
-    width: 50%;
     display: flex;
     position: fixed;
     translate: -50% 0;
+    width: max-content;
     align-items: center;
-    padding: 1.5rem 2rem;
+    padding: 1rem 4rem;
     border: var(--Outline);
     bottom: 0;
     margin: 2rem;
     justify-content: center;
-    border-radius: var(--Special-Radius);
+    background: var(--White);
+    border-radius: 1.75rem 0 1.75rem 0;
+    box-shadow: 0 0 10px hsla(0, 0%, 0%, 20%);
 }
 .Whiteboard-Area .Whiteboard-Options .Whiteboard-Option {
     width: 2.25rem;
@@ -189,6 +196,25 @@ button.Primary {
 }
 .Whiteboard-Area .Whiteboard-Options .Whiteboard-Option:active {
     scale: 0.8;
+}
+.Whiteboard-Area .Whiteboard-Options .Whiteboard-Option:nth-child(4) {
+    margin-right: 0;
+    anchor-name: --more;
+}
+.Whiteboard-Area .Whiteboard-Options .Whiteboard-Option.Active {
+    background: hsl(from var(--Main) h s l / 0.15);
+}
+.Whiteboard-Area .Whiteboard-Options .Whiteboard-Option.Active .Dark {
+    color: var(--Main);
+}
+
+.Whiteboard-Area .Whiteboard {
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    position: fixed;
+    background: white;
+    z-index: -99;
 }
 
 .Sticky-Note {
@@ -217,4 +243,51 @@ button.Primary {
     font-size: 1.5rem;
     text-align: center;
     color: currentColor;
+}
+
+.Text-Block {
+    font-weight: bold;
+    padding: 5px 10px;
+    /* width: max-content; */
+    font-family: var(--Whiteboard-Font);
+    border: var(--Outline-Thickness) dashed var(--Main);
+}
+
+.Selection {
+    resize: both;
+    min-width: 1rem;
+    min-height: 1rem;
+    overflow: hidden;
+    border: 1px dashed var(--Main);
+    background: hsl(from var(--Main) h s l / 0.15);
+}
+
+.Shape {
+    width: 5rem;
+    height: 5rem;
+    margin: 10px;
+    background: var(--Light-Main);
+}
+.Shape.Circle {
+    border-radius: 50%;
+}
+.Shape.Triangle {
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+.Shape.Star {
+    clip-path: polygon(
+        50% 0%,
+        61% 35%,
+        98% 35%,
+        68% 57%,
+        79% 91%,
+        50% 70%,
+        21% 91%,
+        32% 57%,
+        2% 35%,
+        39% 35%
+    );
+}
+
+.More-Options-Popover {
 }

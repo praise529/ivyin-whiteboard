@@ -5,19 +5,82 @@ import {
     NoteBlank,
     PencilSimple,
     Spinner,
+    XCircle,
 } from "phosphor-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
+
+type ToolTypes = "Pen" | "Eraser" | "Sticky-Note" | "More" | null;
+type StateTypes = "Not Yet." | "Done!" | "Error..." | null;
 
 const WhiteboardScreen = () => {
     const { id } = useParams();
+    const PopoverRef = useRef<HTMLDivElement>(null);
+    const [ToolActive, SetToolActive] = useState<ToolTypes>("Pen");
     const [Saved, SetSaved] = useState(false);
+    const [State, SetState] = useState<StateTypes>("Not Yet.");
+
+    useEffect(() => {
+        fetch("https://jsonplaceholder.typicode.com/todos/1")
+            .then((Stream) => {
+                return Stream.json();
+            })
+            .then((Data) => {
+                console.log(Data);
+                SetState("Done!");
+            })
+            .catch((Err) => {
+                console.error(Err);
+                SetState("Error...");
+            });
+    }, []);
+    if (State === "Error...") {
+        return (
+            <div
+                style={{
+                    gap: 10,
+                    height: "100vh",
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                }}
+            >
+                <XCircle color="red" weight="bold" size={60}></XCircle>
+                <h2 style={{ color: "red" }}>Something went wrong...</h2>
+            </div>
+        );
+    }
+
+    if (State === "Not Yet.") {
+        return (
+            <div
+                style={{
+                    gap: 10,
+                    height: "100vh",
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                }}
+            >
+                <Spinner
+                    weight="bold"
+                    size={60}
+                    className="Spin Dark"
+                ></Spinner>
+                <h2>Drawing...</h2>
+            </div>
+        );
+    }
 
     function ChangeSaved() {
         SetSaved(Saved ? false : true);
     }
+
     return (
         <div className="Whiteboard-Area">
+            <canvas className="Whiteboard"></canvas>
             <div className="Whiteboard-Top">
                 <input defaultValue={id} className="Whiteboard-Name"></input>
                 <div>
@@ -39,9 +102,9 @@ const WhiteboardScreen = () => {
             </div>
             <div className="Whiteboard-Options">
                 <div
-                    className="Whiteboard-Option"
-                    onClick={ChangeSaved}
+                    className={`Whiteboard-Option ${ToolActive === "Pen" && "Active"}`}
                     title="Pen"
+                    onClick={() => SetToolActive("Pen")}
                 >
                     <PencilSimple
                         weight="bold"
@@ -49,22 +112,49 @@ const WhiteboardScreen = () => {
                         className="Dark"
                     ></PencilSimple>
                 </div>
-                <div className="Whiteboard-Option" title="Eraser">
+                <div
+                    className={`Whiteboard-Option ${ToolActive === "Eraser" && "Active"}`}
+                    title="Eraser"
+                    onClick={() => SetToolActive("Eraser")}
+                >
                     <Eraser weight="bold" size={32} className="Dark"></Eraser>
                 </div>
-                <div className="Whiteboard-Option" title="Sticky Note">
+                <div
+                    className={`Whiteboard-Option ${ToolActive === "Sticky-Note" && "Active"}`}
+                    title="Sticky Note"
+                    onClick={() => SetToolActive("Sticky-Note")}
+                >
                     <NoteBlank
                         weight="bold"
                         size={32}
                         className="Dark"
                     ></NoteBlank>
                 </div>
-                <div className="Whiteboard-Option" title="More Options">
+                <div
+                    className={`Whiteboard-Option ${ToolActive === "More" && "Active"}`}
+                    title="More Options"
+                    onClick={() => {
+                        SetToolActive("More");
+
+                        if (PopoverRef.current) {
+                            PopoverRef.current.togglePopover();
+                        }
+                    }}
+                    popoverTarget="More-Options-Popover"
+                >
                     <DotsNine
                         weight="bold"
                         size={32}
                         className="Dark"
                     ></DotsNine>
+                </div>
+                <div
+                    ref={PopoverRef}
+                    className="More-Options-Popover"
+                    popover="auto"
+                    id="More-Options-Popover"
+                >
+                    <h1>hi</h1>
                 </div>
             </div>
         </div>
