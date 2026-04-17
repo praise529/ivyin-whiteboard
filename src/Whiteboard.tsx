@@ -7,7 +7,7 @@ import {
     Spinner,
     XCircle,
 } from "phosphor-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
 type ToolTypes = "Pen" | "Eraser" | "Sticky-Note" | "More" | null;
@@ -15,7 +15,6 @@ type StateTypes = "Not Yet." | "Done!" | "Error..." | null;
 
 const WhiteboardScreen = () => {
     const { id } = useParams();
-    const PopoverRef = useRef<HTMLDivElement>(null);
     const [ToolActive, SetToolActive] = useState<ToolTypes>("Pen");
     const [Saved, SetSaved] = useState(false);
     const [State, SetState] = useState<StateTypes>("Not Yet.");
@@ -135,26 +134,13 @@ const WhiteboardScreen = () => {
                     title="More Options"
                     onClick={() => {
                         SetToolActive("More");
-
-                        if (PopoverRef.current) {
-                            PopoverRef.current.togglePopover();
-                        }
                     }}
-                    popoverTarget="More-Options-Popover"
                 >
                     <DotsNine
                         weight="bold"
                         size={32}
                         className="Dark"
                     ></DotsNine>
-                </div>
-                <div
-                    ref={PopoverRef}
-                    className="More-Options-Popover"
-                    popover="auto"
-                    id="More-Options-Popover"
-                >
-                    <h1>hi</h1>
                 </div>
             </div>
         </div>

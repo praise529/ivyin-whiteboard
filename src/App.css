@@ -199,7 +199,6 @@ button.Primary {
 }
 .Whiteboard-Area .Whiteboard-Options .Whiteboard-Option:nth-child(4) {
     margin-right: 0;
-    anchor-name: --more;
 }
 .Whiteboard-Area .Whiteboard-Options .Whiteboard-Option.Active {
     background: hsl(from var(--Main) h s l / 0.15);
@@ -287,7 +286,4 @@ button.Primary {
         2% 35%,
         39% 35%
     );
-}
-
-.More-Options-Popover {
 }
