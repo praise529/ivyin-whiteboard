@@ -77,9 +77,22 @@ const WhiteboardScreen = () => {
         SetSaved(Saved ? false : true);
     }
 
+    function CheckStufff() {
+        ChangeSaved();
+        if (ToolActive === "Pen") {
+            alert("Not yet pen");
+        } else if (ToolActive === "Eraser") {
+            alert("Not yet eraser");
+        } else if (ToolActive === "Sticky-Note") {
+            alert("STICKY NOTE :DDDDDDDDDDDDDDDDDDDDDDD");
+        } else if (ToolActive === "More") {
+            alert("Not yet more");
+        }
+    }
+
     return (
         <div className="Whiteboard-Area">
-            <canvas className="Whiteboard"></canvas>
+            <div className="Whiteboard" onClick={CheckStufff}></div>
             <div className="Whiteboard-Top">
                 <input defaultValue={id} className="Whiteboard-Name"></input>
                 <div>

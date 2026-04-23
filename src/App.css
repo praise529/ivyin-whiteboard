@@ -147,6 +147,7 @@ button.Primary {
     gap: 1rem;
     display: flex;
     margin: 2rem;
+    z-index: 99999;
     width: max-content;
     height: max-content;
     align-items: center;
@@ -213,7 +214,7 @@ button.Primary {
     height: 100dvh;
     position: fixed;
     background: white;
-    z-index: -99;
+    z-index: 0;
 }
 
 .Sticky-Note {
