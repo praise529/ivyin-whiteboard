@@ -8,7 +8,7 @@
     --White: hsl(20, 100%, 98%);
     --Dark-Colour: hsl(20, 100%, 20%);
     --Foreground: hsl(20, 100%, 97%);
-    --Main: hsl(336, 100%, 60%);
+    --Main: hsl(45, 100%, 59%);
     --Light-Main: hsl(from var(--Main) h s calc(l + 15));
     --Outline-Thickness: 3px;
     --Outline: var(--Outline-Thickness) solid var(--Dark-Colour);
@@ -175,13 +175,13 @@ button.Primary {
     translate: -50% 0;
     width: max-content;
     align-items: center;
-    padding: 1rem 4rem;
+    padding: 0.5rem 2rem;
     border: var(--Outline);
     bottom: 0;
     margin: 2rem;
     justify-content: center;
     background: var(--White);
-    border-radius: 1.75rem 0 1.75rem 0;
+    border-radius: 1.25rem;
     box-shadow: 0 0 10px hsla(0, 0%, 0%, 20%);
 }
 .Whiteboard-Area .Whiteboard-Options .Whiteboard-Option {
@@ -189,7 +189,7 @@ button.Primary {
     height: 2.25rem;
     padding: 0.75rem;
     margin-right: 2rem;
-    border-radius: 50%;
+    border-radius: 1rem;
     align-items: center;
     display: inline-flex;
     justify-content: center;
@@ -198,7 +198,7 @@ button.Primary {
 .Whiteboard-Area .Whiteboard-Options .Whiteboard-Option:active {
     scale: 0.8;
 }
-.Whiteboard-Area .Whiteboard-Options .Whiteboard-Option:nth-child(4) {
+.Whiteboard-Area .Whiteboard-Options .Whiteboard-Option:nth-child(5) {
     margin-right: 0;
 }
 .Whiteboard-Area .Whiteboard-Options .Whiteboard-Option.Active {
@@ -227,9 +227,10 @@ button.Primary {
     min-height: 10rem;
     display: inline-block;
     border-radius: 0 0 1rem;
+    border: var(--Outline);
     corner-shape: round round bevel;
     font-family: var(--Whiteboard-Font);
-    background: hsl(from red h s calc(l + 10) / 0.4);
+    background: hsl(0, 100%, 90%);
 }
 .Sticky-Note .Text {
     cursor: text;

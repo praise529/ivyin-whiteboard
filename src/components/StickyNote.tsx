@@ -1,10 +1,10 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 type StickyNoteTypes = {
     DefaultText?: string;
-};
+} & React.ComponentPropsWithoutRef<"div">;
 
-const StickyNote = ({ DefaultText = "Hi!" }: StickyNoteTypes) => {
+const StickyNote = ({ DefaultText = "Hi!", ...props }: StickyNoteTypes) => {
     const textRef = useRef<HTMLTextAreaElement>(null);
 
     const resize = (el: HTMLTextAreaElement) => {
@@ -18,12 +18,12 @@ const StickyNote = ({ DefaultText = "Hi!" }: StickyNoteTypes) => {
         }
     }, []);
 
-    const StickyNoteChange = (e: any) => {
-        resize(e.target);
+    const StickyNoteChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
+        resize(e.currentTarget);
     };
 
     return (
-        <div className="Sticky-Note">
+        <div className="Sticky-Note" {...props}>
             <textarea
                 ref={textRef}
                 defaultValue={DefaultText}

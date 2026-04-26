@@ -5,19 +5,38 @@ import {
     NoteBlank,
     PencilSimple,
     Spinner,
+    TextT,
     XCircle,
 } from "phosphor-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
+import StickyNote from "./components/StickyNote";
 
-type ToolTypes = "Pen" | "Eraser" | "Sticky-Note" | "More" | null;
+type ToolTypes = "Pen" | "Eraser" | "Sticky-Note" | "Text" | "More" | null;
 type StateTypes = "Not Yet." | "Done!" | "Error..." | null;
+const KeyboardShortcuts = {
+    Pen: "p",
+    Eraser: "e",
+    Note: "s",
+    Text: "t",
+};
 
 const WhiteboardScreen = () => {
     const { id } = useParams();
+    const WhiteboardRef = useRef(null);
+    const [StickyNotes, SetStickyNotes] = useState<any[]>([]);
     const [ToolActive, SetToolActive] = useState<ToolTypes>("Pen");
     const [Saved, SetSaved] = useState(false);
     const [State, SetState] = useState<StateTypes>("Not Yet.");
+
+    useEffect(() => {
+        const handler = (e: KeyboardEvent) => CheckKeys(e);
+        window.addEventListener("keydown", handler);
+
+        return () => {
+            window.removeEventListener("keydown", handler);
+        };
+    }, []);
 
     useEffect(() => {
         fetch("https://jsonplaceholder.typicode.com/todos/1")
@@ -76,23 +95,76 @@ const WhiteboardScreen = () => {
     function ChangeSaved() {
         SetSaved(Saved ? false : true);
     }
-
-    function CheckStufff() {
+    function CheckStufff(e: React.MouseEvent) {
         ChangeSaved();
         if (ToolActive === "Pen") {
             alert("Not yet pen");
         } else if (ToolActive === "Eraser") {
             alert("Not yet eraser");
         } else if (ToolActive === "Sticky-Note") {
-            alert("STICKY NOTE :DDDDDDDDDDDDDDDDDDDDDDD");
+            SpawnStickyNote(e);
         } else if (ToolActive === "More") {
             alert("Not yet more");
+        }
+    }
+    function CheckKeys(e: KeyboardEvent) {
+        const key = e.key;
+        if (e.target === WhiteboardRef.current) {
+            if (key === KeyboardShortcuts.Pen || key === "Digit1") {
+                SetToolActive("Pen");
+            } else if (key === KeyboardShortcuts.Eraser) {
+                SetToolActive("Eraser");
+            } else if (key === KeyboardShortcuts.Note) {
+                SetToolActive("Sticky-Note");
+            } else if (key === "Escape") {
+                SetToolActive(null);
+            } else if (e.ctrlKey) {
+                alert("HI");
+            }
+        }
+    }
+    function SpawnStickyNote(e: React.MouseEvent) {
+        if (e.target === WhiteboardRef.current) {
+            const NOTE_WIDTH = 224;
+            const NOTE_HEIGHT = 224;
+
+            SetStickyNotes((prev) => [
+                ...prev,
+                {
+                    x: e.clientX - NOTE_WIDTH / 2,
+                    y: e.clientY - NOTE_HEIGHT / 2,
+                    content: "",
+                    _id: Date.now(),
+                },
+            ]);
         }
     }
 
     return (
         <div className="Whiteboard-Area">
-            <div className="Whiteboard" onClick={CheckStufff}></div>
+            <div
+                className="Whiteboard"
+                onClick={(e) => CheckStufff(e)}
+                ref={WhiteboardRef}
+            >
+                {StickyNotes.length > 0 ? (
+                    <div>
+                        {StickyNotes.map((Note, index) => (
+                            <div>
+                                <StickyNote
+                                    style={{
+                                        position: "absolute",
+                                        left: Note.x,
+                                        top: Note.y,
+                                    }}
+                                    key={index}
+                                    DefaultText={Note.Content}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                ) : null}
+            </div>
             <div className="Whiteboard-Top">
                 <input defaultValue={id} className="Whiteboard-Name"></input>
                 <div>
@@ -120,7 +192,7 @@ const WhiteboardScreen = () => {
                 >
                     <PencilSimple
                         weight="bold"
-                        size={32}
+                        size={28}
                         className="Dark"
                     ></PencilSimple>
                 </div>
@@ -129,7 +201,7 @@ const WhiteboardScreen = () => {
                     title="Eraser"
                     onClick={() => SetToolActive("Eraser")}
                 >
-                    <Eraser weight="bold" size={32} className="Dark"></Eraser>
+                    <Eraser weight="bold" size={28} className="Dark"></Eraser>
                 </div>
                 <div
                     className={`Whiteboard-Option ${ToolActive === "Sticky-Note" && "Active"}`}
@@ -138,10 +210,19 @@ const WhiteboardScreen = () => {
                 >
                     <NoteBlank
                         weight="bold"
-                        size={32}
+                        size={28}
                         className="Dark"
                     ></NoteBlank>
                 </div>
+
+                <div
+                    className={`Whiteboard-Option ${ToolActive === "Text" && "Active"}`}
+                    title="Text"
+                    onClick={() => SetToolActive("Text")}
+                >
+                    <TextT weight="bold" size={28} className="Dark"></TextT>
+                </div>
+
                 <div
                     className={`Whiteboard-Option ${ToolActive === "More" && "Active"}`}
                     title="More Options"
@@ -151,7 +232,7 @@ const WhiteboardScreen = () => {
                 >
                     <DotsNine
                         weight="bold"
-                        size={32}
+                        size={28}
                         className="Dark"
                     ></DotsNine>
                 </div>
