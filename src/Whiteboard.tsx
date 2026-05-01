@@ -3,7 +3,6 @@ import {
     CheckCircle,
     Circle,
     Cursor,
-    Diamond,
     Eraser,
     NoteBlank,
     PencilSimple,
