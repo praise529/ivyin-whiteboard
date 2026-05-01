@@ -1,10 +1,14 @@
 import {
+    ArrowRight,
     CheckCircle,
-    DotsNine,
+    Circle,
+    Cursor,
+    Diamond,
     Eraser,
     NoteBlank,
     PencilSimple,
     Spinner,
+    Square,
     TextT,
     XCircle,
 } from "phosphor-react";
@@ -12,9 +16,21 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import StickyNote from "./components/StickyNote";
 
-type ToolTypes = "Pen" | "Eraser" | "Sticky-Note" | "Text" | "More" | null;
+type ToolTypes =
+    | "Select"
+    | "Pen"
+    | "Eraser"
+    | "Sticky-Note"
+    | "Text"
+    | "Square"
+    | "Circle"
+    | "Diamond"
+    | "Line"
+    | "Arrow"
+    | null;
 type StateTypes = "Not Yet." | "Done!" | "Error..." | null;
 const KeyboardShortcuts = {
+    Select: "s",
     Pen: "p",
     Eraser: "e",
     Note: "s",
@@ -23,9 +39,10 @@ const KeyboardShortcuts = {
 
 const WhiteboardScreen = () => {
     const { id } = useParams();
+    const [Zoom, SetZoom] = useState<number>(0);
     const WhiteboardRef = useRef(null);
     const [StickyNotes, SetStickyNotes] = useState<any[]>([]);
-    const [ToolActive, SetToolActive] = useState<ToolTypes>("Pen");
+    const [ToolActive, SetToolActive] = useState<ToolTypes>("Select");
     const [Saved, SetSaved] = useState(false);
     const [State, SetState] = useState<StateTypes>("Not Yet.");
 
@@ -103,8 +120,6 @@ const WhiteboardScreen = () => {
             alert("Not yet eraser");
         } else if (ToolActive === "Sticky-Note") {
             SpawnStickyNote(e);
-        } else if (ToolActive === "More") {
-            alert("Not yet more");
         }
     }
     function CheckKeys(e: KeyboardEvent) {
@@ -120,6 +135,8 @@ const WhiteboardScreen = () => {
                 SetToolActive(null);
             } else if (e.ctrlKey) {
                 alert("HI");
+            } else if (key === KeyboardShortcuts.Select) {
+                SetToolActive("Select");
             }
         }
     }
@@ -146,6 +163,7 @@ const WhiteboardScreen = () => {
                 className="Whiteboard"
                 onClick={(e) => CheckStufff(e)}
                 ref={WhiteboardRef}
+                style={{ zoom: Zoom }}
             >
                 {StickyNotes.length > 0 ? (
                     <div>
@@ -186,6 +204,13 @@ const WhiteboardScreen = () => {
             </div>
             <div className="Whiteboard-Options">
                 <div
+                    className={`Whiteboard-Option ${ToolActive === "Select" && "Active"}`}
+                    title="Select"
+                    onClick={() => SetToolActive("Select")}
+                >
+                    <Cursor weight="bold" size={28} className="Dark"></Cursor>
+                </div>
+                <div
                     className={`Whiteboard-Option ${ToolActive === "Pen" && "Active"}`}
                     title="Pen"
                     onClick={() => SetToolActive("Pen")}
@@ -222,20 +247,43 @@ const WhiteboardScreen = () => {
                 >
                     <TextT weight="bold" size={28} className="Dark"></TextT>
                 </div>
-
                 <div
-                    className={`Whiteboard-Option ${ToolActive === "More" && "Active"}`}
-                    title="More Options"
-                    onClick={() => {
-                        SetToolActive("More");
-                    }}
+                    className={`Whiteboard-Option ${ToolActive === "Square" && "Active"}`}
+                    title="Square"
+                    onClick={() => SetToolActive("Square")}
                 >
-                    <DotsNine
+                    <Square weight="bold" size={28} className="Dark"></Square>
+                </div>
+                <div
+                    className={`Whiteboard-Option ${ToolActive === "Circle" && "Active"}`}
+                    title="Circle"
+                    onClick={() => SetToolActive("Circle")}
+                >
+                    <Circle weight="bold" size={28} className="Dark"></Circle>
+                </div>
+                <div
+                    className={`Whiteboard-Option ${ToolActive === "Arrow" && "Active"}`}
+                    title="Arrow"
+                    onClick={() => SetToolActive("Arrow")}
+                >
+                    <ArrowRight
                         weight="bold"
                         size={28}
                         className="Dark"
-                    ></DotsNine>
+                    ></ArrowRight>
                 </div>
+            </div>
+            <div className="Whiteboard-Zoom">
+                <button onClick={() => SetZoom((prev) => prev - 25)}>-</button>
+                <span>
+                    <input
+                        type="number"
+                        min={0}
+                        max={500}
+                        defaultValue={Zoom}
+                    />
+                </span>
+                <button onClick={() => SetZoom((prev) => prev + 25)}>+</button>
             </div>
         </div>
     );
