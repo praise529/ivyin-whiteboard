@@ -1,19 +1,14 @@
-@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap");
+
 :root {
-    --Font: "Fredoka", sans-serif;
+    --Font: "Jost", sans-serif;
     --Whiteboard-Font: "Caveat";
 
-    --White: hsl(20, 100%, 98%);
-    --Dark-Colour: hsl(20, 100%, 20%);
-    --Foreground: hsl(20, 100%, 97%);
-    --Main: hsl(45, 100%, 59%);
-    --Border-Colour: hsl(20, 100%, 20%);
-    --Light-Main: hsl(from var(--Main) h s calc(l + 15));
-    --Outline-Thickness: 2px;
-    --Outline: var(--Outline-Thickness) solid var(--Border-Colour);
+    --White: hsl(0, 0%, 100%);
+    --Main: hsl(189, 100%, 59%);
+    --Dark-White: hsl(189, 20%, 94%);
+    --Text-Black: black;
     --Transition: 200ms cubic-bezier(0.3, 0.8, 0.2, 1.3);
-    --Special-Radius: 1rem 0 1rem 0;
 }
 
 * {
@@ -41,10 +36,16 @@ body {
         display: none;
     }
 }
+/* @media (max-width: 768px) {
+    .Whiteboard-Options {
+
+    }
+} */
+
 @media (hover: hover) {
     button:hover {
         scale: 1.05;
-        background: hsl(from var(--Light-Main) h s calc(l - 5));
+        background: hsl(from var(--Dark-White) h s calc(l - 5));
     }
 
     button:hover .Plus {
@@ -70,7 +71,7 @@ li,
 label,
 i,
 button {
-    color: var(--Dark-Colour);
+    color: var(--Text-Black);
 }
 
 a.Link {
@@ -85,21 +86,19 @@ button {
     display: inline-flex;
     padding: 0.5rem 1rem;
     align-items: center;
-    border: var(--Outline);
+    border: none;
     transition: var(--Transition);
-    background: var(--Foreground);
+    background: var(--Dark-White);
 }
 button.Primary {
-    background: var(--Light-Main);
+    border: none;
+    background: hsl(from var(--Main) h s calc(l + 30));
 }
 
 /* button */
 
 .Whiteboard-Font {
     font-family: var(--Whiteboard-Font);
-}
-.Dark {
-    color: var(--Dark-Colour);
 }
 
 .Top-Bar {
@@ -120,17 +119,15 @@ button.Primary {
     margin-bottom: 1rem;
     height: max-content;
     padding: 1.5rem 2rem;
-    border: var(--Outline);
-    background: var(--Foreground);
-    border-radius: var(--Special-Radius);
+    background: var(--Dark-White);
+    border-radius: 1.5rem;
 }
 .All-Whiteboards .Whiteboard-Item img {
     width: 100%;
     height: 5rem;
     margin-bottom: 0.5rem;
-    border: var(--Outline);
-    background: var(--Foreground);
-    border-radius: var(--Special-Radius);
+    background: var(--Dark-White);
+    border-radius: 1.5rem;
 }
 
 .Spin {
@@ -151,12 +148,11 @@ button.Primary {
     width: max-content;
     height: max-content;
     align-items: center;
-    padding: 1.5rem 2rem;
-    border: var(--Outline);
+    padding: 1.25rem 2rem;
     justify-content: center;
-    background: var(--White);
-    border-radius: var(--Special-Radius);
-    box-shadow: 0 0 10px hsla(0, 0%, 0%, 20%);
+    background: var(--Dark-White);
+    border-radius: 1.5rem;
+    /* box-shadow: 0 4px 20px hsla(0, 0%, 50%, 15%); */
 }
 
 .Whiteboard-Area .Whiteboard-Top .Whiteboard-Name {
@@ -165,31 +161,29 @@ button.Primary {
     background: none;
     font-weight: bold;
     font-size: 1.5rem;
-    color: var(--Dark-Colour);
+    color: var(--Outline-Colour);
 }
 
 .Whiteboard-Area .Whiteboard-Options {
-    left: 50%;
+    left: 0;
     display: flex;
     position: fixed;
-    translate: -50% 0;
     width: max-content;
     align-items: center;
-    padding: 0.5rem 2rem;
-    border: var(--Outline);
+    padding: 0.5rem 1rem;
     bottom: 0;
-    margin: 2rem;
+    margin: 40px;
     justify-content: center;
-    background: var(--White);
+    background: var(--Dark-White);
     border-radius: 1.25rem;
-    box-shadow: 0 0 10px hsla(0, 0%, 0%, 20%);
+    /* box-shadow: 0 4px 20px hsla(0, 0%, 50%, 15%); */
 }
 .Whiteboard-Area .Whiteboard-Options .Whiteboard-Option {
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 1.25rem;
+    height: 1.25rem;
     padding: 0.75rem;
-    margin-right: 2rem;
-    border-radius: 1rem;
+    margin-right: 1rem;
+    border-radius: 0.75rem;
     align-items: center;
     display: inline-flex;
     justify-content: center;
@@ -202,10 +196,10 @@ button.Primary {
     margin-right: 0;
 }
 .Whiteboard-Area .Whiteboard-Options .Whiteboard-Option.Active {
-    background: hsl(from var(--Main) h s l / 0.15);
+    background: hsl(from var(--Main) h s l / 0.1);
 }
 .Whiteboard-Area .Whiteboard-Options .Whiteboard-Option.Active .Dark {
-    color: var(--Main);
+    color: hsl(from var(--Main) h s calc(l - 25));
 }
 
 .Whiteboard-Area .Whiteboard {
@@ -288,13 +282,91 @@ button.Primary {
         39% 35%
     );
 }
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 
+/* Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: none;
+}
 .Whiteboard-Zoom {
     right: 0;
-    margin: 2rem;
-    padding: 1rem;
+    bottom: 0;
+    gap: 0.75rem;
+    margin: 40px;
+    padding: 0.75rem 1rem;
     position: fixed;
-    border: var(--Outline);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    background: var(--Dark-White);
+    border-radius: 1.5rem;
+    /* box-shadow: 0 4px 20px hsla(0, 0%, 50%, 15%); */
+}
+.Whiteboard-Zoom .Line {
+    color: hsl(from var(--Dark-White) h s calc(l - 20));
+}
+.Whiteboard-Zoom input {
+    border: none;
+    /* width: 3rem; */
+    padding: 0.5rem;
+    text-align: center;
+    border-radius: 0.5rem;
     background: var(--White);
-    border-radius: var(--Special-Radius);
+}
+
+.Whiteboard-Properties {
+    left: 0;
+    margin: 2rem;
+    padding: 2rem 2rem;
+    position: fixed;
+    top: 20%;
+    /* box-shadow: 0 4px 20px hsla(0, 0%, 50%, 15%); */
+    background: var(--Dark-White);
+    border-radius: 1.5rem;
+}
+.Whiteboard-Properties .Property {
+    display: flex;
+    padding: 0.5rem 1rem;
+    flex-direction: column;
+}
+
+.Whiteboard-Properties .Property .Options {
+    gap: 0.5rem;
+    display: flex;
+    margin: 0.5rem 0.5rem 0.5rem 0;
+    overflow-x: auto;
+    flex-direction: row;
+    scroll-snap-type: mandatory;
+}
+.Whiteboard-Properties .Property .Options .Option {
+    min-width: 1rem;
+    cursor: pointer;
+    padding: 0.75rem;
+    min-height: 1rem;
+    align-items: center;
+    display: inline-flex;
+    border-radius: 0.75rem;
+    justify-content: center;
+    background: var(--White);
+}
+.Whiteboard-Properties .Property .Options .Option.Extend {
+    padding: 0.75rem 1rem;
+    min-width: max-content;
+}
+.Whiteboard-Properties .Property .Options .Option.No-Border {
+    border: none;
+}
+
+@media (max-width: 956px) {
+    .Whiteboard-Options .Whiteboard-Option {
+        padding: 0.5rem;
+        margin-right: 0.5rem;
+    }
 }

@@ -1,11 +1,18 @@
 import {
     ArrowRight,
+    ArrowUUpLeft,
+    ArrowUUpRight,
     CheckCircle,
     Circle,
     Cursor,
     Eraser,
+    Eyedropper,
+    Minus,
+    MinusCircle,
     NoteBlank,
     PencilSimple,
+    Plus,
+    PlusCircle,
     Spinner,
     Square,
     TextT,
@@ -40,7 +47,11 @@ const WhiteboardScreen = () => {
     const { id } = useParams();
     const [Zoom, SetZoom] = useState<number>(0);
     const WhiteboardRef = useRef(null);
-    const [StickyNotes, SetStickyNotes] = useState<any[]>([]);
+    const [Elements, SetElements] = useState({
+        StickyNotes: [] as any[],
+        Shapes: [] as any[],
+    });
+    const [ItemSelected, SetItemSelected] = useState<boolean>(true);
     const [ToolActive, SetToolActive] = useState<ToolTypes>("Select");
     const [Saved, SetSaved] = useState(false);
     const [State, SetState] = useState<StateTypes>("Not Yet.");
@@ -144,15 +155,12 @@ const WhiteboardScreen = () => {
             const NOTE_WIDTH = 224;
             const NOTE_HEIGHT = 224;
 
-            SetStickyNotes((prev) => [
-                ...prev,
-                {
-                    x: e.clientX - NOTE_WIDTH / 2,
-                    y: e.clientY - NOTE_HEIGHT / 2,
-                    content: "",
-                    _id: Date.now(),
-                },
-            ]);
+            Elements.StickyNotes.push({
+                x: e.clientX - NOTE_WIDTH / 2,
+                y: e.clientY - NOTE_HEIGHT / 2,
+                content: "",
+                _id: Date.now(),
+            });
         }
     }
 
@@ -164,9 +172,9 @@ const WhiteboardScreen = () => {
                 ref={WhiteboardRef}
                 style={{ zoom: Zoom }}
             >
-                {StickyNotes.length > 0 ? (
+                {Elements.StickyNotes.length > 0 ? (
                     <div>
-                        {StickyNotes.map((Note, index) => (
+                        {Elements.StickyNotes.map((Note, index) => (
                             <div>
                                 <StickyNote
                                     style={{
@@ -183,7 +191,11 @@ const WhiteboardScreen = () => {
                 ) : null}
             </div>
             <div className="Whiteboard-Top">
-                <input defaultValue={id} className="Whiteboard-Name"></input>
+                <input
+                    defaultValue={id}
+                    className="Whiteboard-Name"
+                    style={{ fontWeight: 600 }}
+                ></input>
                 <div>
                     {Saved ? (
                         <CheckCircle
@@ -207,7 +219,11 @@ const WhiteboardScreen = () => {
                     title="Select"
                     onClick={() => SetToolActive("Select")}
                 >
-                    <Cursor weight="bold" size={28} className="Dark"></Cursor>
+                    <Cursor
+                        weight={ToolActive === "Select" ? "fill" : "bold"}
+                        size={28}
+                        className="Dark"
+                    ></Cursor>
                 </div>
                 <div
                     className={`Whiteboard-Option ${ToolActive === "Pen" && "Active"}`}
@@ -251,14 +267,22 @@ const WhiteboardScreen = () => {
                     title="Square"
                     onClick={() => SetToolActive("Square")}
                 >
-                    <Square weight="bold" size={28} className="Dark"></Square>
+                    <Square
+                        weight={ToolActive === "Square" ? "fill" : "bold"}
+                        size={28}
+                        className="Dark"
+                    ></Square>
                 </div>
                 <div
                     className={`Whiteboard-Option ${ToolActive === "Circle" && "Active"}`}
                     title="Circle"
                     onClick={() => SetToolActive("Circle")}
                 >
-                    <Circle weight="bold" size={28} className="Dark"></Circle>
+                    <Circle
+                        weight={ToolActive === "Circle" ? "fill" : "bold"}
+                        size={28}
+                        className="Dark"
+                    ></Circle>
                 </div>
                 <div
                     className={`Whiteboard-Option ${ToolActive === "Arrow" && "Active"}`}
@@ -266,24 +290,81 @@ const WhiteboardScreen = () => {
                     onClick={() => SetToolActive("Arrow")}
                 >
                     <ArrowRight
-                        weight="bold"
+                        weight={ToolActive === "Arrow" ? "fill" : "bold"}
                         size={28}
                         className="Dark"
                     ></ArrowRight>
                 </div>
             </div>
             <div className="Whiteboard-Zoom">
-                <button onClick={() => SetZoom((prev) => prev - 25)}>-</button>
-                <span>
-                    <input
-                        type="number"
-                        min={0}
-                        max={500}
-                        defaultValue={Zoom}
-                    />
-                </span>
-                <button onClick={() => SetZoom((prev) => prev + 25)}>+</button>
+                <div>
+                    <button>
+                        <ArrowUUpLeft weight="bold" size={20} />
+                    </button>
+                    <button>
+                        <ArrowUUpRight weight="bold" size={20} />
+                    </button>
+                </div>
+                <span className="Line">|</span>
+                <div
+                    style={{
+                        gap: 8,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                >
+                    <button onClick={() => SetZoom((prev) => prev - 25)}>
+                        <MinusCircle weight="bold" size={20} />
+                    </button>
+                    <span>
+                        <input
+                            type="number"
+                            min={0}
+                            max={500}
+                            defaultValue={Zoom}
+                        />
+                    </span>
+                    <button onClick={() => SetZoom((prev) => prev + 25)}>
+                        <PlusCircle weight="bold" size={20} />
+                    </button>
+                </div>
             </div>
+            {ItemSelected && (
+                <div className="Whiteboard-Properties">
+                    <div className="Property">
+                        <h4>Size</h4>
+                        <div className="Options">
+                            <div className="Option">
+                                <Plus />
+                            </div>
+                            <div className="Option">S</div>
+                            <div className="Option">M</div>
+                            <div className="Option">L</div>
+                        </div>
+                    </div>
+                    <div className="Property">
+                        <h4>Colour</h4>
+                        <div className="Options">
+                            <div className="Option">
+                                <Eyedropper />
+                            </div>
+                            <div
+                                className="Option No-Border"
+                                style={{ background: "hsl(0,100%,69%)" }}
+                            ></div>
+                            <div
+                                className="Option No-Border"
+                                style={{ background: "hsl(220,100%,69%)" }}
+                            ></div>
+                            <div
+                                className="Option No-Border"
+                                style={{ background: "hsl(260,100%,69%)" }}
+                            ></div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
