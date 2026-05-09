@@ -1,7 +1,7 @@
 import { PlusCircle, Spinner, XCircle } from "phosphor-react";
 import "./App.css";
 // import Whiteboard from "./components/Whiteboard";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 
 type StateTypes = "Not Yet." | "Done!" | "Error..." | null;

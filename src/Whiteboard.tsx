@@ -7,7 +7,6 @@ import {
     Cursor,
     Eraser,
     Eyedropper,
-    Minus,
     MinusCircle,
     NoteBlank,
     PencilSimple,
@@ -64,6 +63,11 @@ const WhiteboardScreen = () => {
             window.removeEventListener("keydown", handler);
         };
     }, []);
+
+    function name() {
+        SetElements;
+        SetItemSelected;
+    }
 
     useEffect(() => {
         fetch("https://jsonplaceholder.typicode.com/todos/1")
@@ -351,6 +355,7 @@ const WhiteboardScreen = () => {
                             </div>
                             <div
                                 className="Option No-Border"
+                                onClick={name}
                                 style={{ background: "hsl(0,100%,69%)" }}
                             ></div>
                             <div
