@@ -1,13 +1,13 @@
-@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Schoolbell&display=swap");
 
 :root {
     --Font: "Jost", sans-serif;
-    --Whiteboard-Font: "Caveat";
+    --Whiteboard-Font: "Schoolbell";
 
     --White: hsl(0, 0%, 100%);
     --Main: hsl(189, 100%, 59%);
     --Dark-White: hsl(189, 20%, 94%);
-    --Text-Black: black;
+    --Text-Black: hsl(0, 0%, 0%);
     --Transition: 200ms cubic-bezier(0.3, 0.8, 0.2, 1.3);
 }
 
@@ -214,15 +214,14 @@ button.Primary {
     cursor: grab;
     padding: 2rem;
     max-width: 10rem;
-    font-weight: bold;
     width: 100%;
     height: max-content;
     min-height: 10rem;
     display: inline-block;
     border-radius: 0 0 1rem;
     border: var(--Outline);
+    font-family: "Schoolbell";
     corner-shape: round round bevel;
-    font-family: var(--Whiteboard-Font);
     background: hsl(0, 100%, 90%);
 }
 .Sticky-Note .Text {
@@ -237,14 +236,20 @@ button.Primary {
     font-size: 1.5rem;
     text-align: center;
     color: currentColor;
+    font-family: var(--Whiteboard-Font);
 }
 
 .Text-Block {
+    /* font-size: 1.5rem; */
     font-weight: bold;
     padding: 5px 10px;
+    width: max-content;
     /* width: max-content; */
     font-family: var(--Whiteboard-Font);
-    border: var(--Outline-Thickness) dashed var(--Main);
+    border: 2px solid transparent;
+}
+.Text-Block.selected {
+    border-color: var(--Main);
 }
 
 .Selection {
@@ -355,6 +360,10 @@ input[type="number"] {
     border-radius: 0.75rem;
     justify-content: center;
     background: var(--White);
+}
+.Whiteboard-Properties .Property .Options .Option.selected {
+    color: white;
+    background: hsl(from var(--Dark-White) h calc(s - 10) calc(l - 30));
 }
 .Whiteboard-Properties .Property .Options .Option.Extend {
     padding: 0.75rem 1rem;

@@ -20,6 +20,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import StickyNote from "./components/StickyNote";
+import "./App.css";
 
 type ToolTypes =
     | "Select"
@@ -49,8 +50,14 @@ const WhiteboardScreen = () => {
     const [Elements, SetElements] = useState({
         StickyNotes: [] as any[],
         Shapes: [] as any[],
+        TextBlocks: [] as any[],
     });
-    const [ItemSelected, SetItemSelected] = useState<boolean>(true);
+    const [ItemSelected, SetItemSelected] = useState<boolean>(false);
+    const [ThingSelected, SetThingSelected] = useState<{
+        type: "StickyNote" | "Text";
+        id: number;
+        size?: 24 | number;
+    } | null>(null);
     const [ToolActive, SetToolActive] = useState<ToolTypes>("Select");
     const [Saved, SetSaved] = useState(false);
     const [State, SetState] = useState<StateTypes>("Not Yet.");
@@ -63,11 +70,6 @@ const WhiteboardScreen = () => {
             window.removeEventListener("keydown", handler);
         };
     }, []);
-
-    function name() {
-        SetElements;
-        SetItemSelected;
-    }
 
     useEffect(() => {
         fetch("https://jsonplaceholder.typicode.com/todos/1")
@@ -128,12 +130,19 @@ const WhiteboardScreen = () => {
     }
     function CheckStufff(e: React.MouseEvent) {
         ChangeSaved();
+        if (ItemSelected) {
+            SetItemSelected(false);
+            SetThingSelected(null);
+            return;
+        }
         if (ToolActive === "Pen") {
             alert("Not yet pen");
         } else if (ToolActive === "Eraser") {
             alert("Not yet eraser");
         } else if (ToolActive === "Sticky-Note") {
             SpawnStickyNote(e);
+        } else if (ToolActive === "Text") {
+            SpawnText(e);
         }
     }
     function CheckKeys(e: KeyboardEvent) {
@@ -159,12 +168,36 @@ const WhiteboardScreen = () => {
             const NOTE_WIDTH = 224;
             const NOTE_HEIGHT = 224;
 
-            Elements.StickyNotes.push({
-                x: e.clientX - NOTE_WIDTH / 2,
-                y: e.clientY - NOTE_HEIGHT / 2,
-                content: "",
-                _id: Date.now(),
-            });
+            SetElements((Previous) => ({
+                ...Previous,
+                StickyNotes: [
+                    ...Previous.StickyNotes,
+                    {
+                        x: e.clientX - NOTE_WIDTH / 2,
+                        y: e.clientY - NOTE_HEIGHT / 2,
+                        content: "",
+                        _id: Date.now(),
+                    },
+                ],
+            }));
+        }
+    }
+
+    function SpawnText(e: React.MouseEvent) {
+        if (e.target === WhiteboardRef.current && ItemSelected === false) {
+            SetElements((Previous) => ({
+                ...Previous,
+                TextBlocks: [
+                    ...Previous.TextBlocks,
+                    {
+                        x: e.clientX,
+                        y: e.clientY,
+                        size: 24,
+                        content: "Text",
+                        _id: Date.now(),
+                    },
+                ],
+            }));
         }
     }
 
@@ -179,7 +212,16 @@ const WhiteboardScreen = () => {
                 {Elements.StickyNotes.length > 0 ? (
                     <div>
                         {Elements.StickyNotes.map((Note, index) => (
-                            <div>
+                            <div
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    SetItemSelected(true);
+                                    SetThingSelected({
+                                        type: "Text",
+                                        id: Note._id,
+                                    });
+                                }}
+                            >
                                 <StickyNote
                                     style={{
                                         position: "absolute",
@@ -188,6 +230,37 @@ const WhiteboardScreen = () => {
                                     }}
                                     key={index}
                                     DefaultText={Note.Content}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                ) : null}
+                {Elements.TextBlocks.length > 0 ? (
+                    <div>
+                        {Elements.TextBlocks.map((Text, index) => (
+                            <div
+                                key={index}
+                                style={{
+                                    position: "absolute",
+                                    left: Text.x,
+                                    top: Text.y,
+                                    fontFamily: "Schoolbell",
+                                }}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    SetItemSelected(true);
+                                    SetThingSelected({
+                                        type: "Text",
+                                        id: Text._id,
+                                        size: Text.size,
+                                    });
+                                }}
+                            >
+                                <input
+                                    type="text"
+                                    style={{ fontSize: Text.size }}
+                                    className={`Text-Block ${ThingSelected?.id === Text._id ? "selected" : ""}`}
+                                    defaultValue={Text.content}
                                 />
                             </div>
                         ))}
@@ -334,15 +407,19 @@ const WhiteboardScreen = () => {
                     </button>
                 </div>
             </div>
-            {ItemSelected && (
+            {ItemSelected && ThingSelected?.type === "Text" && (
                 <div className="Whiteboard-Properties">
                     <div className="Property">
                         <h4>Size</h4>
                         <div className="Options">
                             <div className="Option">
-                                <Plus />
+                                <Plus weight="bold" />
                             </div>
-                            <div className="Option">S</div>
+                            <div
+                                className={`Option ${ThingSelected.size === 24 ? "selected" : ""}`}
+                            >
+                                S
+                            </div>
                             <div className="Option">M</div>
                             <div className="Option">L</div>
                         </div>
@@ -351,12 +428,11 @@ const WhiteboardScreen = () => {
                         <h4>Colour</h4>
                         <div className="Options">
                             <div className="Option">
-                                <Eyedropper />
+                                <Eyedropper weight="bold" />
                             </div>
                             <div
                                 className="Option No-Border"
-                                onClick={name}
-                                style={{ background: "hsl(0,100%,69%)" }}
+                                style={{ background: "hsl(0,100%,0%)" }}
                             ></div>
                             <div
                                 className="Option No-Border"

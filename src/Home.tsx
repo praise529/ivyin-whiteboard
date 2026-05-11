@@ -110,7 +110,7 @@ function Home() {
     return (
         <div>
             <div className="Top-Bar">
-                <h1>Whiteboards</h1>
+                <h1 style={{ fontFamily: "Schoolbell" }}>Whiteboards</h1>
 
                 <button className="Primary" onClick={CreateWhiteboard}>
                     <PlusCircle weight="bold" size={22} className="Plus" />
