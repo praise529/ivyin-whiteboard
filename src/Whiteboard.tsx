@@ -7,6 +7,7 @@ import {
     Cursor,
     Eraser,
     Eyedropper,
+    Minus,
     MinusCircle,
     NoteBlank,
     PencilSimple,
@@ -143,6 +144,8 @@ const WhiteboardScreen = () => {
             SpawnStickyNote(e);
         } else if (ToolActive === "Text") {
             SpawnText(e);
+        } else if (ToolActive === "Select") {
+            // Selecting(e);
         }
     }
     function CheckKeys(e: KeyboardEvent) {
@@ -262,6 +265,14 @@ const WhiteboardScreen = () => {
                                     className={`Text-Block ${ThingSelected?.id === Text._id ? "selected" : ""}`}
                                     defaultValue={Text.content}
                                 />
+                                {ThingSelected?.id === Text._id && (
+                                    <>
+                                        <div className="Resize-Handle top-left" />
+                                        <div className="Resize-Handle top-right" />
+                                        <div className="Resize-Handle bottom-left" />
+                                        <div className="Resize-Handle bottom-right" />
+                                    </>
+                                )}
                             </div>
                         ))}
                     </div>
@@ -375,10 +386,10 @@ const WhiteboardScreen = () => {
             </div>
             <div className="Whiteboard-Zoom">
                 <div>
-                    <button>
+                    <button title="Undo">
                         <ArrowUUpLeft weight="bold" size={20} />
                     </button>
-                    <button>
+                    <button title="Redo">
                         <ArrowUUpRight weight="bold" size={20} />
                     </button>
                 </div>
@@ -391,19 +402,26 @@ const WhiteboardScreen = () => {
                         justifyContent: "center",
                     }}
                 >
-                    <button onClick={() => SetZoom((prev) => prev - 25)}>
-                        <MinusCircle weight="bold" size={20} />
+                    <button
+                        onClick={() => SetZoom((prev) => prev - 25)}
+                        title="Zoom Out"
+                    >
+                        <Minus weight="bold" size={20} />
                     </button>
                     <span>
                         <input
                             type="number"
                             min={0}
                             max={500}
+                            title="Zoom"
                             defaultValue={Zoom}
                         />
                     </span>
-                    <button onClick={() => SetZoom((prev) => prev + 25)}>
-                        <PlusCircle weight="bold" size={20} />
+                    <button
+                        onClick={() => SetZoom((prev) => prev + 25)}
+                        title="Zoom In"
+                    >
+                        <Plus weight="bold" size={20} />
                     </button>
                 </div>
             </div>

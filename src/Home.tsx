@@ -1,4 +1,4 @@
-import { PlusCircle, Spinner, XCircle } from "phosphor-react";
+import { Moon, PlusCircle, Spinner, XCircle } from "phosphor-react";
 import "./App.css";
 // import Whiteboard from "./components/Whiteboard";
 import { useNavigate } from "react-router";
@@ -112,10 +112,15 @@ function Home() {
             <div className="Top-Bar">
                 <h1 style={{ fontFamily: "Schoolbell" }}>Whiteboards</h1>
 
-                <button className="Primary" onClick={CreateWhiteboard}>
-                    <PlusCircle weight="bold" size={22} className="Plus" />
-                    <p>Create Whiteboard</p>
-                </button>
+                <div>
+                    <button className="Primary" onClick={CreateWhiteboard}>
+                        <PlusCircle weight="bold" size={22} className="Plus" />
+                        <p>Create Whiteboard</p>
+                    </button>
+                    <button>
+                        <Moon weight="bold"></Moon>
+                    </button>
+                </div>
             </div>
             <div className="All-Whiteboards">
                 {Whiteboards.length > 0 ? (

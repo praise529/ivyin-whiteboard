@@ -11,11 +11,23 @@
     --Transition: 200ms cubic-bezier(0.3, 0.8, 0.2, 1.3);
 }
 
+:root {
+    --White: hsl(0, 0%, 20%);
+    --Main: hsl(189, 100%, 79%);
+    --Dark-White: hsl(189, 5%, 25%);
+    --Text-Black: hsl(0, 0%, 90%);
+    --Transition: 200ms cubic-bezier(0.3, 0.8, 0.2, 1.3);
+}
+
 * {
     margin: 0;
     padding: 0;
     outline: none;
     font-family: var(--Font);
+}
+
+*::selection {
+    background: hsl(from var(--Main) h s l / 0.15);
 }
 
 body {
@@ -70,8 +82,26 @@ p,
 li,
 label,
 i,
-button {
+button,
+.Dark,
+input {
     color: var(--Text-Black);
+}
+
+/* h1,
+h2,
+h3,
+h4 {
+    color: white;
+} */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 600;
 }
 
 a.Link {
@@ -92,7 +122,11 @@ button {
 }
 button.Primary {
     border: none;
-    background: hsl(from var(--Main) h s calc(l + 30));
+    color: black;
+    background: var(--Main);
+}
+button.Primary p {
+    color: currentColor;
 }
 
 /* button */
@@ -161,7 +195,7 @@ button.Primary {
     background: none;
     font-weight: bold;
     font-size: 1.5rem;
-    color: var(--Outline-Colour);
+    color: var(--Text-Black);
 }
 
 .Whiteboard-Area .Whiteboard-Options {
@@ -199,14 +233,14 @@ button.Primary {
     background: hsl(from var(--Main) h s l / 0.1);
 }
 .Whiteboard-Area .Whiteboard-Options .Whiteboard-Option.Active .Dark {
-    color: hsl(from var(--Main) h s calc(l - 25));
+    color: var(--Main);
 }
 
 .Whiteboard-Area .Whiteboard {
     width: 200%;
     height: 200dvh;
     position: fixed;
-    background: white;
+    background: var(--White);
     z-index: 0;
 }
 
@@ -240,16 +274,62 @@ button.Primary {
 }
 
 .Text-Block {
-    /* font-size: 1.5rem; */
     font-weight: bold;
     padding: 5px 10px;
     width: max-content;
-    /* width: max-content; */
+    background: none;
+    text-align: center;
+    position: relative;
+    display: inline-block;
     font-family: var(--Whiteboard-Font);
     border: 2px solid transparent;
 }
 .Text-Block.selected {
     border-color: var(--Main);
+}
+.Resize-Handle {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+
+    background: var(--White);
+    border: 2px solid var(--Main);
+
+    position: absolute;
+}
+.Resize-Handle:hover {
+    transform: scale(1.15);
+}
+.Resize-Handle:hover {
+    transform: scale(1.15);
+}
+
+.Resize-Handle.bottom-right {
+    right: -4px;
+    bottom: -4px;
+
+    cursor: nwse-resize;
+}
+
+.Resize-Handle.bottom-left {
+    left: -4px;
+    bottom: -4px;
+
+    cursor: nesw-resize;
+}
+
+.Resize-Handle.top-right {
+    right: -4px;
+    top: -4px;
+
+    cursor: nesw-resize;
+}
+
+.Resize-Handle.top-left {
+    left: -4px;
+    top: -4px;
+
+    cursor: nwse-resize;
 }
 
 .Selection {
@@ -360,7 +440,9 @@ input[type="number"] {
     border-radius: 0.75rem;
     justify-content: center;
     background: var(--White);
+    color: var(--Text-Black);
 }
+/* .Whiteboard-Properties .Property .Options .Option */
 .Whiteboard-Properties .Property .Options .Option.selected {
     color: white;
     background: hsl(from var(--Dark-White) h calc(s - 10) calc(l - 30));
