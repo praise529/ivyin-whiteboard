@@ -1,206 +1,34 @@
-import {
-    ArrowRight,
-    ArrowUUpLeft,
-    ArrowUUpRight,
-    CheckCircle,
-    Circle,
-    Cursor,
-    Eraser,
-    Eyedropper,
-    Minus,
-    NoteBlank,
-    PencilSimple,
-    Plus,
-    Spinner,
-    Square,
-    TextT,
-    XCircle,
-} from "phosphor-react";
-import { useEffect, useRef, useState } from "react";
+import { CheckCircle, Spinner } from "phosphor-react";
 import { useParams } from "react-router";
-import StickyNote from "./components/StickyNote";
 import "./App.css";
-
-type ToolTypes =
-    | "Select"
-    | "Pen"
-    | "Eraser"
-    | "Sticky-Note"
-    | "Text"
-    | "Square"
-    | "Circle"
-    | "Diamond"
-    | "Line"
-    | "Arrow"
-    | null;
-type StateTypes = "Not Yet." | "Done!" | "Error..." | null;
-const KeyboardShortcuts = {
-    Select: "s",
-    Pen: "p",
-    Eraser: "e",
-    Note: "s",
-    Text: "t",
-};
+import ZoomControl from "./components/zoom-control";
+import LoadingScreen from "./components/whiteboard/status-screens/loading-screen";
+import ErrorScreen from "./components/whiteboard/status-screens/error-screen";
+import Toolbar from "./components/whiteboard/toolbar";
+import PropertiesPanel from "./components/whiteboard/properties-panel";
+import { useWhiteboard } from "./hooks/useWhiteboard";
+import { StickyNoteLayer } from "./components/whiteboard/layers/sticky-note-layer";
 
 const WhiteboardScreen = () => {
     const { id } = useParams();
-    const [Zoom, SetZoom] = useState<number>(0);
-    const WhiteboardRef = useRef(null);
-    const [Elements, SetElements] = useState({
-        StickyNotes: [] as any[],
-        Shapes: [] as any[],
-        TextBlocks: [] as any[],
-    });
-    const [ItemSelected, SetItemSelected] = useState<boolean>(false);
-    const [ThingSelected, SetThingSelected] = useState<{
-        type: "StickyNote" | "Text";
-        id: number;
-        size?: 24 | number;
-    } | null>(null);
-    const [ToolActive, SetToolActive] = useState<ToolTypes>("Select");
-    const [Saved, SetSaved] = useState(false);
-    const [State, SetState] = useState<StateTypes>("Not Yet.");
+    const {
+        Zoom,
+        SetZoom,
+        WhiteboardRef,
+        Elements,
+        ItemSelected,
+        SetItemSelected,
+        ThingSelected,
+        SetThingSelected,
+        ToolActive,
+        SetToolActive,
+        Saved,
+        State,
+        CheckStufff,
+    } = useWhiteboard();
 
-    useEffect(() => {
-        const handler = (e: KeyboardEvent) => CheckKeys(e);
-        window.addEventListener("keydown", handler);
-
-        return () => {
-            window.removeEventListener("keydown", handler);
-        };
-    }, []);
-
-    useEffect(() => {
-        fetch("https://jsonplaceholder.typicode.com/todos/1")
-            .then((Stream) => {
-                return Stream.json();
-            })
-            .then((Data) => {
-                console.log(Data);
-                SetState("Done!");
-            })
-            .catch((Err) => {
-                console.error(Err);
-                SetState("Error...");
-            });
-    }, []);
-    if (State === "Error...") {
-        return (
-            <div
-                style={{
-                    gap: 10,
-                    height: "100vh",
-                    display: "flex",
-                    alignItems: "center",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                }}
-            >
-                <XCircle color="red" weight="bold" size={60}></XCircle>
-                <h2 style={{ color: "red" }}>Something went wrong...</h2>
-            </div>
-        );
-    }
-
-    if (State === "Not Yet.") {
-        return (
-            <div
-                style={{
-                    gap: 10,
-                    height: "100vh",
-                    display: "flex",
-                    alignItems: "center",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                }}
-            >
-                <Spinner
-                    weight="bold"
-                    size={60}
-                    className="Spin Dark"
-                ></Spinner>
-                <h2>Drawing...</h2>
-            </div>
-        );
-    }
-
-    function ChangeSaved() {
-        SetSaved(Saved ? false : true);
-    }
-    function CheckStufff(e: React.MouseEvent) {
-        ChangeSaved();
-        if (ItemSelected) {
-            SetItemSelected(false);
-            SetThingSelected(null);
-            return;
-        }
-        if (ToolActive === "Pen") {
-            alert("Not yet pen");
-        } else if (ToolActive === "Eraser") {
-            alert("Not yet eraser");
-        } else if (ToolActive === "Sticky-Note") {
-            SpawnStickyNote(e);
-        } else if (ToolActive === "Text") {
-            SpawnText(e);
-        } else if (ToolActive === "Select") {
-            // Selecting(e);
-        }
-    }
-    function CheckKeys(e: KeyboardEvent) {
-        const key = e.key;
-        if (e.target === WhiteboardRef.current) {
-            if (key === KeyboardShortcuts.Pen || key === "Digit1") {
-                SetToolActive("Pen");
-            } else if (key === KeyboardShortcuts.Eraser) {
-                SetToolActive("Eraser");
-            } else if (key === KeyboardShortcuts.Note) {
-                SetToolActive("Sticky-Note");
-            } else if (key === "Escape") {
-                SetToolActive(null);
-            } else if (e.ctrlKey) {
-                alert("HI");
-            } else if (key === KeyboardShortcuts.Select) {
-                SetToolActive("Select");
-            }
-        }
-    }
-    function SpawnStickyNote(e: React.MouseEvent) {
-        if (e.target === WhiteboardRef.current) {
-            const NOTE_WIDTH = 224;
-            const NOTE_HEIGHT = 224;
-
-            SetElements((Previous) => ({
-                ...Previous,
-                StickyNotes: [
-                    ...Previous.StickyNotes,
-                    {
-                        x: e.clientX - NOTE_WIDTH / 2,
-                        y: e.clientY - NOTE_HEIGHT / 2,
-                        content: "",
-                        _id: Date.now(),
-                    },
-                ],
-            }));
-        }
-    }
-
-    function SpawnText(e: React.MouseEvent) {
-        if (e.target === WhiteboardRef.current && ItemSelected === false) {
-            SetElements((Previous) => ({
-                ...Previous,
-                TextBlocks: [
-                    ...Previous.TextBlocks,
-                    {
-                        x: e.clientX,
-                        y: e.clientY,
-                        size: 24,
-                        content: "Text",
-                        _id: Date.now(),
-                    },
-                ],
-            }));
-        }
-    }
+    if (State === "Error...") return <ErrorScreen />;
+    if (State === "Not Yet.") return <LoadingScreen />;
 
     return (
         <div className="Whiteboard-Area">
@@ -208,34 +36,16 @@ const WhiteboardScreen = () => {
                 className="Whiteboard"
                 onClick={(e) => CheckStufff(e)}
                 ref={WhiteboardRef}
-                style={{ zoom: Zoom }}
+                style={{ zoom: Zoom / 100 }}
             >
-                {Elements.StickyNotes.length > 0 ? (
-                    <div>
-                        {Elements.StickyNotes.map((Note, index) => (
-                            <div
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    SetItemSelected(true);
-                                    SetThingSelected({
-                                        type: "Text",
-                                        id: Note._id,
-                                    });
-                                }}
-                            >
-                                <StickyNote
-                                    style={{
-                                        position: "absolute",
-                                        left: Note.x,
-                                        top: Note.y,
-                                    }}
-                                    key={index}
-                                    DefaultText={Note.Content}
-                                />
-                            </div>
-                        ))}
-                    </div>
-                ) : null}
+                <StickyNoteLayer
+                    Notes={Elements.StickyNotes}
+                    ThingSelected={ThingSelected}
+                    OnSelect={(id) => {
+                        SetItemSelected(true);
+                        SetThingSelected({ type: "StickyNote", id });
+                    }}
+                />
                 {Elements.TextBlocks.length > 0 ? (
                     <div>
                         {Elements.TextBlocks.map((Text, index) => (
@@ -280,7 +90,7 @@ const WhiteboardScreen = () => {
                 <input
                     defaultValue={id}
                     className="Whiteboard-Name"
-                    style={{ fontWeight: 600 }}
+                    style={{ fontWeight: "bold" }}
                 ></input>
                 <div>
                     {Saved ? (
@@ -299,168 +109,12 @@ const WhiteboardScreen = () => {
                     )}
                 </div>
             </div>
-            <div className="Whiteboard-Options">
-                <div
-                    className={`Whiteboard-Option ${ToolActive === "Select" && "Active"}`}
-                    title="Select"
-                    onClick={() => SetToolActive("Select")}
-                >
-                    <Cursor
-                        weight={ToolActive === "Select" ? "fill" : "bold"}
-                        size={28}
-                        className="Dark"
-                    ></Cursor>
-                </div>
-                <div
-                    className={`Whiteboard-Option ${ToolActive === "Pen" && "Active"}`}
-                    title="Pen"
-                    onClick={() => SetToolActive("Pen")}
-                >
-                    <PencilSimple
-                        weight="bold"
-                        size={28}
-                        className="Dark"
-                    ></PencilSimple>
-                </div>
-                <div
-                    className={`Whiteboard-Option ${ToolActive === "Eraser" && "Active"}`}
-                    title="Eraser"
-                    onClick={() => SetToolActive("Eraser")}
-                >
-                    <Eraser weight="bold" size={28} className="Dark"></Eraser>
-                </div>
-                <div
-                    className={`Whiteboard-Option ${ToolActive === "Sticky-Note" && "Active"}`}
-                    title="Sticky Note"
-                    onClick={() => SetToolActive("Sticky-Note")}
-                >
-                    <NoteBlank
-                        weight="bold"
-                        size={28}
-                        className="Dark"
-                    ></NoteBlank>
-                </div>
 
-                <div
-                    className={`Whiteboard-Option ${ToolActive === "Text" && "Active"}`}
-                    title="Text"
-                    onClick={() => SetToolActive("Text")}
-                >
-                    <TextT weight="bold" size={28} className="Dark"></TextT>
-                </div>
-                <div
-                    className={`Whiteboard-Option ${ToolActive === "Square" && "Active"}`}
-                    title="Square"
-                    onClick={() => SetToolActive("Square")}
-                >
-                    <Square
-                        weight={ToolActive === "Square" ? "fill" : "bold"}
-                        size={28}
-                        className="Dark"
-                    ></Square>
-                </div>
-                <div
-                    className={`Whiteboard-Option ${ToolActive === "Circle" && "Active"}`}
-                    title="Circle"
-                    onClick={() => SetToolActive("Circle")}
-                >
-                    <Circle
-                        weight={ToolActive === "Circle" ? "fill" : "bold"}
-                        size={28}
-                        className="Dark"
-                    ></Circle>
-                </div>
-                <div
-                    className={`Whiteboard-Option ${ToolActive === "Arrow" && "Active"}`}
-                    title="Arrow"
-                    onClick={() => SetToolActive("Arrow")}
-                >
-                    <ArrowRight
-                        weight={ToolActive === "Arrow" ? "fill" : "bold"}
-                        size={28}
-                        className="Dark"
-                    ></ArrowRight>
-                </div>
-            </div>
-            <div className="Whiteboard-Zoom">
-                <div>
-                    <button title="Undo">
-                        <ArrowUUpLeft weight="bold" size={20} />
-                    </button>
-                    <button title="Redo">
-                        <ArrowUUpRight weight="bold" size={20} />
-                    </button>
-                </div>
-                <span className="Line">|</span>
-                <div
-                    style={{
-                        gap: 8,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                    }}
-                >
-                    <button
-                        onClick={() => SetZoom((prev) => prev - 25)}
-                        title="Zoom Out"
-                    >
-                        <Minus weight="bold" size={20} />
-                    </button>
-                    <span>
-                        <input
-                            type="number"
-                            min={0}
-                            max={500}
-                            title="Zoom"
-                            defaultValue={Zoom}
-                        />
-                    </span>
-                    <button
-                        onClick={() => SetZoom((prev) => prev + 25)}
-                        title="Zoom In"
-                    >
-                        <Plus weight="bold" size={20} />
-                    </button>
-                </div>
-            </div>
+            <Toolbar ToolActive={ToolActive} SetToolActive={SetToolActive} />
+
+            <ZoomControl Zoom={Zoom} SetZoom={SetZoom} />
             {ItemSelected && ThingSelected?.type === "Text" && (
-                <div className="Whiteboard-Properties">
-                    <div className="Property">
-                        <h4>Size</h4>
-                        <div className="Options">
-                            <div className="Option">
-                                <Plus weight="bold" />
-                            </div>
-                            <div
-                                className={`Option ${ThingSelected.size === 24 ? "selected" : ""}`}
-                            >
-                                S
-                            </div>
-                            <div className="Option">M</div>
-                            <div className="Option">L</div>
-                        </div>
-                    </div>
-                    <div className="Property">
-                        <h4>Colour</h4>
-                        <div className="Options">
-                            <div className="Option">
-                                <Eyedropper weight="bold" />
-                            </div>
-                            <div
-                                className="Option No-Border"
-                                style={{ background: "hsl(0,100%,0%)" }}
-                            ></div>
-                            <div
-                                className="Option No-Border"
-                                style={{ background: "hsl(220,100%,69%)" }}
-                            ></div>
-                            <div
-                                className="Option No-Border"
-                                style={{ background: "hsl(260,100%,69%)" }}
-                            ></div>
-                        </div>
-                    </div>
-                </div>
+                <PropertiesPanel ThingSelected={ThingSelected} />
             )}
         </div>
     );

@@ -6,10 +6,7 @@ function App() {
     return (
         <Routes>
             <Route path="/" element={<Home />}></Route>
-            <Route
-                path="/whiteboard/:id"
-                element={<WhiteboardScreen />}
-            ></Route>
+            <Route path="/w/:id" element={<WhiteboardScreen />}></Route>
         </Routes>
     );
 }

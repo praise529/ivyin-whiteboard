@@ -256,7 +256,7 @@ button.Primary p {
     height: max-content;
     min-height: 10rem;
     display: inline-block;
-    background: hsl(0, 100%, 90%);
+    background: var(--Dark-White);
     font-family: var(--Whiteboard-Font);
 }
 .Sticky-Note .Text {

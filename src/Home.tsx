@@ -110,7 +110,7 @@ function Home() {
     return (
         <div>
             <div className="Top-Bar">
-                <h1 style={{ fontFamily: "Schoolbell" }}>Whiteboards</h1>
+                <h1>Whiteboards</h1>
 
                 <div>
                     <button className="Primary" onClick={CreateWhiteboard}>
