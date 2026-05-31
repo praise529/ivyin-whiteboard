@@ -1,7 +1,7 @@
 import { CheckCircle, Spinner } from "phosphor-react";
 import { useParams } from "react-router";
 import "./App.css";
-import ZoomControl from "./components/zoom-control";
+import ZoomControl from "./components/whiteboard/zoom-control";
 import LoadingScreen from "./components/whiteboard/status-screens/loading-screen";
 import ErrorScreen from "./components/whiteboard/status-screens/error-screen";
 import Toolbar from "./components/whiteboard/toolbar";
