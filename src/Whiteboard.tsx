@@ -45,7 +45,15 @@ const EditWhiteboard = () => {
             <div
                 className="Whiteboard"
                 ref={WhiteboardRef}
-                style={{ cursor: ToolActive === "Hand" ? "grab" : "default" }}
+                style={{
+                    cursor: ToolActive === "Hand" ? "grab" : "default",
+                    backgroundSize: `${24 * (Zoom / 100)}px ${24 * (Zoom / 100)}px`,
+                    backgroundPosition: `${Pan.x}px ${Pan.y}px`,
+                    backgroundImage:
+                        Zoom < 50
+                            ? "none"
+                            : `radial-gradient(circle, hsl(from var(--Dark-White) h s calc(l - 30) / ${Math.min(0.45, Zoom / 100)}) 1px, transparent 1px)`,
+                }}
                 onMouseDown={onMouseDown}
                 onMouseMove={onMouseMove}
                 onMouseUp={onMouseUp}

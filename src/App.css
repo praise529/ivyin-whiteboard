@@ -279,7 +279,7 @@ button.Primary p {
     background: none;
     min-height: 7rem;
     /* font-weight: bold; */
-    font-size: 1.5rem;
+    font-size: 1rem;
     text-align: center;
     color: currentColor;
     font-family: var(--Whiteboard-Font);
