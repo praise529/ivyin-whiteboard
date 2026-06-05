@@ -4,7 +4,7 @@ type StickieTypes = {
     DefaultText?: string;
 } & React.ComponentPropsWithoutRef<"div">;
 
-const Stickie = ({ DefaultText = "Hi!", ...props }: StickieTypes) => {
+const Stickie = ({ DefaultText = "", ...props }: StickieTypes) => {
     const textRef = useRef<HTMLTextAreaElement>(null);
 
     const resize = (el: HTMLTextAreaElement) => {
@@ -22,14 +22,19 @@ const Stickie = ({ DefaultText = "Hi!", ...props }: StickieTypes) => {
         resize(e.currentTarget);
     };
 
+    const stickieClicked = () => {
+        textRef.current?.focus();
+    };
+
     return (
-        <div className="Stickie" {...props}>
+        <div className="Stickie" {...props} onClick={stickieClicked}>
             <textarea
                 ref={textRef}
                 defaultValue={DefaultText}
                 className="Text"
                 rows={1}
-                onInput={StickieChange}
+                placeholder="Any thoughts?"
+                onChange={StickieChange}
             />
         </div>
     );

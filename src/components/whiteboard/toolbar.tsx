@@ -7,6 +7,7 @@ import {
     Square,
     Circle,
     ArrowRight,
+    Hand,
 } from "phosphor-react";
 import type { ToolTypes } from "../../types";
 
@@ -30,9 +31,20 @@ const Toolbar = ({ ToolActive, SetToolActive }: ToolbarTypes) => {
                 ></Cursor>
             </div>
             <div
-                className={`Whiteboard-Option ${ToolActive === "Pen" && "Active"}`}
-                title="Pen"
-                onClick={() => SetToolActive("Pen")}
+                className={`Whiteboard-Option ${ToolActive === "Hand" && "Active"}`}
+                title="Hand"
+                onClick={() => SetToolActive("Hand")}
+            >
+                <Hand
+                    weight={ToolActive === "Hand" ? "fill" : "bold"}
+                    size={28}
+                    className="Dark"
+                ></Hand>
+            </div>
+            <div
+                className={`Whiteboard-Option ${ToolActive === "Sketch" && "Active"}`}
+                title="Sketch"
+                onClick={() => SetToolActive("Sketch")}
             >
                 <PencilSimple
                     weight="bold"
