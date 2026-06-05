@@ -5,7 +5,7 @@ export type ToolTypes =
     | "Select"
     | "Pen"
     | "Eraser"
-    | "Sticky-Note"
+    | "Stickie"
     | "Text"
     | "Square"
     | "Circle"

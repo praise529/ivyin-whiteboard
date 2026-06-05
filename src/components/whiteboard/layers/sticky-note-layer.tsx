@@ -1,4 +1,4 @@
-import StickyNote from "../../StickyNote";
+import Stickie from "../../Stickie";
 
 type Props = {
     Notes: any[];
@@ -18,7 +18,7 @@ export const StickyNoteLayer = ({ Notes, OnSelect }: Props) => {
                         OnSelect(Note._id);
                     }}
                 >
-                    <StickyNote
+                    <Stickie
                         style={{
                             position: "absolute",
                             left: Note.x,

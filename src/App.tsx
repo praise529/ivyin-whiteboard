@@ -1,12 +1,12 @@
 import { Route, Routes } from "react-router";
 import Home from "./Home";
-import WhiteboardScreen from "./Whiteboard";
+import EditWhiteboard from "./Whiteboard";
 
 function App() {
     return (
         <Routes>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/w/:id" element={<WhiteboardScreen />}></Route>
+            <Route path="/" element={<EditWhiteboard />}></Route>
+            <Route path="/whiteboards" element={<Home />}></Route>
         </Routes>
     );
 }

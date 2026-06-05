@@ -48,9 +48,9 @@ const Toolbar = ({ ToolActive, SetToolActive }: ToolbarTypes) => {
                 <Eraser weight="bold" size={28} className="Dark"></Eraser>
             </div>
             <div
-                className={`Whiteboard-Option ${ToolActive === "Sticky-Note" && "Active"}`}
-                title="Sticky Note"
-                onClick={() => SetToolActive("Sticky-Note")}
+                className={`Whiteboard-Option ${ToolActive === "Stickie" && "Active"}`}
+                title="Stickie"
+                onClick={() => SetToolActive("Stickie")}
             >
                 <NoteBlank weight="bold" size={28} className="Dark"></NoteBlank>
             </div>

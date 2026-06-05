@@ -5,7 +5,7 @@ const KEY_TO_TOOL: Record<string, ToolTypes> = {
     s: "Select",
     p: "Pen",
     e: "Eraser",
-    n: "Sticky-Note",
+    n: "Stickie",
     t: "Text",
 };
 
@@ -62,7 +62,7 @@ export function useWhiteboard() {
             SetThingSelected(null);
             return;
         }
-        if (ToolActive === "Sticky-Note") SpawnStickyNote(e);
+        if (ToolActive === "Stickie") SpawnStickyNote(e);
         else if (ToolActive === "Text") SpawnText(e);
     }
 

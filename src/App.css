@@ -248,7 +248,7 @@ button.Primary p {
     z-index: 0;
 }
 
-.Sticky-Note {
+.Stickie {
     cursor: grab;
     padding: 2rem;
     max-width: 10rem;
@@ -259,7 +259,7 @@ button.Primary p {
     background: var(--Dark-White);
     font-family: var(--Whiteboard-Font);
 }
-.Sticky-Note .Text {
+.Stickie .Text {
     cursor: text;
     width: 80%;
     border: none;

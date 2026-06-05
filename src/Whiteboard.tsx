@@ -1,5 +1,5 @@
-import { CheckCircle, Spinner } from "phosphor-react";
-import { useParams } from "react-router";
+// import { CheckCircle, Spinner } from "phosphor-react";
+// import { useParams } from "react-router";
 import "./App.css";
 import ZoomControl from "./components/whiteboard/zoom-control";
 import LoadingScreen from "./components/whiteboard/status-screens/loading-screen";
@@ -9,8 +9,8 @@ import PropertiesPanel from "./components/whiteboard/properties-panel";
 import { useWhiteboard } from "./hooks/useWhiteboard";
 import { StickyNoteLayer } from "./components/whiteboard/layers/sticky-note-layer";
 
-const WhiteboardScreen = () => {
-    const { id } = useParams();
+const EditWhiteboard = () => {
+    // const { id } = useParams();
     const {
         Zoom,
         SetZoom,
@@ -22,7 +22,7 @@ const WhiteboardScreen = () => {
         SetThingSelected,
         ToolActive,
         SetToolActive,
-        Saved,
+        // Saved,
         State,
         CheckStufff,
     } = useWhiteboard();
@@ -86,7 +86,7 @@ const WhiteboardScreen = () => {
                     </div>
                 ) : null}
             </div>
-            <div className="Whiteboard-Top">
+            {/* <div className="Whiteboard-Top">
                 <input
                     defaultValue={id}
                     className="Whiteboard-Name"
@@ -108,7 +108,7 @@ const WhiteboardScreen = () => {
                         ></Spinner>
                     )}
                 </div>
-            </div>
+            </div> */}
 
             <Toolbar ToolActive={ToolActive} SetToolActive={SetToolActive} />
 
@@ -120,4 +120,4 @@ const WhiteboardScreen = () => {
     );
 };
 
-export default WhiteboardScreen;
+export default EditWhiteboard;
