@@ -1,4 +1,4 @@
-import Stickie from "../../Stickie";
+import Stickie from "../stickie.tsx";
 
 type Props = {
     Notes: any[];
