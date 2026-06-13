@@ -1,4 +1,4 @@
-import { Plus, Eyedropper } from "phosphor-react";
+import { Plus, Eyedropper, Copy, Trash } from "phosphor-react";
 
 type Types = {
     ThingSelected: any;
@@ -7,6 +7,17 @@ type Types = {
 const PropertiesPanel = ({ ThingSelected }: Types) => {
     return (
         <div className="Whiteboard-Properties">
+            <div className="Property">
+                <h4>Actions</h4>
+                <div className="Options">
+                    <div className="Option">
+                        <Copy weight="bold" />
+                    </div>
+                    <div className="Option">
+                        <Trash weight="bold" />
+                    </div>
+                </div>
+            </div>
             <div className="Property">
                 <h4>Size</h4>
                 <div className="Options">

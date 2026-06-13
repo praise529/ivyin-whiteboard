@@ -274,7 +274,7 @@
 // }
 
 import { useEffect, useRef, useState } from "react";
-import type { ToolTypes, StateTypes } from "../types";
+import type { ToolTypes, StateTypes, ThingSelectedType } from "../types";
 
 const KEY_TO_TOOL: Record<string, ToolTypes> = {
     s: "Select",
@@ -305,11 +305,7 @@ export function useWhiteboard() {
     const isDrawing = useRef(false);
 
     const [ItemSelected, SetItemSelected] = useState(false);
-    const [ThingSelected, SetThingSelected] = useState<{
-        type: "StickyNote" | "Text";
-        id: number;
-        size?: number;
-    } | null>(null);
+    const [ThingSelected, SetThingSelected] = useState<ThingSelectedType>(null);
     const [ToolActive, SetToolActive] = useState<ToolTypes>("Select");
     const [Saved, SetSaved] = useState(false);
     const [State, SetState] = useState<StateTypes>("Not Yet.");
@@ -407,9 +403,11 @@ export function useWhiteboard() {
                     y: y - NOTE_HEIGHT / 2,
                     content: "",
                     _id: Date.now(),
+                    bgcolor: "var(--Stickie)",
                 },
             ],
         }));
+        console.log(Elements);
     }
 
     function SpawnText(e: React.MouseEvent) {
@@ -428,6 +426,7 @@ export function useWhiteboard() {
                 },
             ],
         }));
+        console.log(Elements);
     }
 
     return {
@@ -451,5 +450,6 @@ export function useWhiteboard() {
         onMouseMove,
         onMouseUp,
         onWheel,
+        SetElements,
     };
 }

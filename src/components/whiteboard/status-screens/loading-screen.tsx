@@ -1,4 +1,4 @@
-import { Spinner } from "phosphor-react";
+import { CircleNotch } from "phosphor-react";
 
 const LoadingScreen = () => {
     return (
@@ -12,7 +12,11 @@ const LoadingScreen = () => {
                 justifyContent: "center",
             }}
         >
-            <Spinner weight="bold" size={60} className="Spin Dark"></Spinner>
+            <CircleNotch
+                weight="bold"
+                size={60}
+                className="Spin Dark"
+            ></CircleNotch>
             <h2>Drawing...</h2>
         </div>
     );

@@ -6,9 +6,10 @@ import "./App.css";
 import LoadingScreen from "./components/whiteboard/status-screens/loading-screen";
 import ErrorScreen from "./components/whiteboard/status-screens/error-screen";
 import Toolbar from "./components/whiteboard/toolbar";
-import PropertiesPanel from "./components/whiteboard/properties-panel";
+import PropertiesPanel from "./components/whiteboard/text-properties-panel";
 import { useWhiteboard } from "./hooks/useWhiteboard";
 import { StickyNoteLayer } from "./components/whiteboard/layers/sticky-note-layer";
+import StickiePropertiesPanel from "./components/whiteboard/stickie-properties-panel";
 
 const EditWhiteboard = () => {
     // const { id } = useParams();
@@ -23,6 +24,7 @@ const EditWhiteboard = () => {
         SetThingSelected,
         ToolActive,
         SetToolActive,
+        SetElements,
         // Saved,
         State,
         CheckStufff,
@@ -39,6 +41,7 @@ const EditWhiteboard = () => {
 
     if (State === "Error...") return <ErrorScreen />;
     if (State === "Not Yet.") return <LoadingScreen />;
+    // console.log(Elements);
 
     return (
         <div className="Whiteboard-Area">
@@ -71,19 +74,20 @@ const EditWhiteboard = () => {
                         ThingSelected={ThingSelected}
                         OnSelect={(id) => {
                             SetItemSelected(true);
-                            SetThingSelected({ type: "StickyNote", id });
+                            SetThingSelected({ type: "Stickie", id });
                         }}
                     />
                     {Elements.TextBlocks.length > 0 ? (
                         <div>
-                            {Elements.TextBlocks.map((Text, index) => (
+                            {Elements.TextBlocks.map((Text) => (
                                 <div
-                                    key={index}
+                                    key={Text._id}
                                     style={{
                                         position: "absolute",
                                         left: Text.x,
                                         top: Text.y,
-                                        fontFamily: "Schoolbell",
+                                        transform: "translate(-50%, -50%)",
+                                        width: "max-content",
                                     }}
                                     onClick={(e) => {
                                         e.stopPropagation();
@@ -97,9 +101,41 @@ const EditWhiteboard = () => {
                                 >
                                     <input
                                         type="text"
-                                        style={{ fontSize: Text.size }}
+                                        autoFocus
+                                        onFocus={(e) => {
+                                            e.target.select();
+                                            SetItemSelected(true);
+                                            SetThingSelected({
+                                                type: "Text",
+                                                id: Text._id,
+                                                size: Text.size,
+                                            });
+                                        }}
+                                        style={{
+                                            fontSize: Text.size,
+                                            cursor:
+                                                ToolActive === "Text"
+                                                    ? "text"
+                                                    : "move",
+                                        }}
                                         className={`Text-Block ${ThingSelected?.id === Text._id ? "selected" : ""}`}
-                                        defaultValue={Text.content}
+                                        value={Text.content}
+                                        onChange={(e) => {
+                                            SetElements((prev: any) => ({
+                                                ...prev,
+                                                TextBlocks: prev.TextBlocks.map(
+                                                    (t: any) =>
+                                                        t._id === Text._id
+                                                            ? {
+                                                                  ...t,
+                                                                  content:
+                                                                      e.target
+                                                                          .value,
+                                                              }
+                                                            : t,
+                                                ),
+                                            }));
+                                        }}
                                     />
                                     {ThingSelected?.id === Text._id && (
                                         <>
@@ -174,6 +210,9 @@ const EditWhiteboard = () => {
             {/* <ZoomControl Zoom={Zoom} SetZoom={SetZoom} /> */}
             {ItemSelected && ThingSelected?.type === "Text" && (
                 <PropertiesPanel ThingSelected={ThingSelected} />
+            )}
+            {ItemSelected && ThingSelected?.type === "Stickie" && (
+                <StickiePropertiesPanel ThingSelected={ThingSelected} />
             )}
         </div>
     );
