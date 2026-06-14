@@ -16,6 +16,7 @@
     "react-router": "^7.14.0",
     "react-router-dom": "^7.14.0",
     "react-zoom-pan-pinch": "^4.0.3",
+    "rough-react-wrapper": "^1.0.2",
     "roughjs": "^4.6.6"
   },
   "devDependencies": {

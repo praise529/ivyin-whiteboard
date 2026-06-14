@@ -35,8 +35,8 @@ const EditWhiteboard = () => {
         onMouseUp,
         onWheel,
 
-        Paths,
-        CurrentPath,
+        // Paths,
+        // CurrentPath,
     } = useWhiteboard();
 
     if (State === "Error...") return <ErrorScreen />;
@@ -149,36 +149,6 @@ const EditWhiteboard = () => {
                             ))}
                         </div>
                     ) : null}
-
-                    {/* SVG drawing layer */}
-                    <svg
-                        style={{
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                            width: "100%",
-                            height: "100%",
-                            pointerEvents: "none",
-                        }}
-                    >
-                        {Paths.map((path) => (
-                            <path
-                                key={path._id}
-                                d={path.d}
-                                stroke="black"
-                                strokeWidth={2}
-                                fill="none"
-                            />
-                        ))}
-                        {CurrentPath && (
-                            <path
-                                d={CurrentPath}
-                                stroke="black"
-                                strokeWidth={2}
-                                fill="none"
-                            />
-                        )}
-                    </svg>
                 </div>
             </div>
             {/* <div className="Whiteboard-Top">
