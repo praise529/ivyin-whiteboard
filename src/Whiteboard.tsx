@@ -35,8 +35,7 @@ const EditWhiteboard = () => {
         onMouseUp,
         onWheel,
 
-        // Paths,
-        // CurrentPath,
+        SpawnStickie,
     } = useWhiteboard();
 
     if (State === "Error...") return <ErrorScreen />;
@@ -55,13 +54,17 @@ const EditWhiteboard = () => {
                     backgroundImage:
                         Zoom < 50
                             ? "none"
-                            : `radial-gradient(circle, hsl(from var(--Dark-White) h s calc(l - 30) / ${Math.min(0.45, Zoom / 100)}) 1px, transparent 1px)`,
+                            : `radial-gradient(circle, hsl(from var(--whiteboard-dots) h s l / ${Math.min(0.45, Zoom / 100)}) 1px, transparent 1px)`,
                 }}
                 onMouseDown={onMouseDown}
                 onMouseMove={onMouseMove}
                 onMouseUp={onMouseUp}
                 onWheel={onWheel}
                 onClick={CheckStufff}
+                onDoubleClick={(e) => {
+                    SetToolActive("Stickie");
+                    SpawnStickie(e);
+                }}
             >
                 <div
                     style={{

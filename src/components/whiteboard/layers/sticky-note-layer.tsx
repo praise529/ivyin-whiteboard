@@ -19,11 +19,15 @@ export const StickyNoteLayer = ({ Notes, OnSelect }: Props) => {
                     }}
                 >
                     <Stickie
-                        style={{
-                            position: "absolute",
-                            left: Note.x,
-                            top: Note.y,
-                        }}
+                        style={
+                            {
+                                position: "absolute",
+                                left: Note.x,
+                                top: Note.y,
+                                background: Note.bgcolor,
+                                "--stickie-color": Note.bgcolor,
+                            } as React.CSSProperties
+                        }
                         DefaultText={Note.content}
                     />
                 </div>

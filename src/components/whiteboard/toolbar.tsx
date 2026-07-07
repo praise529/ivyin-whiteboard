@@ -24,22 +24,14 @@ const Toolbar = ({ ToolActive, SetToolActive }: ToolbarTypes) => {
                 title="Select"
                 onClick={() => SetToolActive("Select")}
             >
-                <Cursor
-                    weight={ToolActive === "Select" ? "fill" : "bold"}
-                    size={28}
-                    className="Dark"
-                ></Cursor>
+                <Cursor weight="bold" size={28} className="Dark"></Cursor>
             </div>
             <div
                 className={`Whiteboard-Option ${ToolActive === "Hand" && "Active"}`}
                 title="Hand"
                 onClick={() => SetToolActive("Hand")}
             >
-                <Hand
-                    weight={ToolActive === "Hand" ? "fill" : "bold"}
-                    size={28}
-                    className="Dark"
-                ></Hand>
+                <Hand weight="bold" size={28} className="Dark"></Hand>
             </div>
             <div
                 className={`Whiteboard-Option ${ToolActive === "Sketch" && "Active"}`}
@@ -102,7 +94,7 @@ const Toolbar = ({ ToolActive, SetToolActive }: ToolbarTypes) => {
                 onClick={() => SetToolActive("Arrow")}
             >
                 <ArrowRight
-                    weight={ToolActive === "Arrow" ? "fill" : "bold"}
+                    weight="bold"
                     size={28}
                     className="Dark"
                 ></ArrowRight>

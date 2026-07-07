@@ -18,6 +18,7 @@ export function useWhiteboard() {
     const [Zoom, SetZoom] = useState(100);
     const [Pan, SetPan] = useState({ x: 0, y: 0 });
     const isPanning = useRef(false);
+    const didPan = useRef(false);
     const lastPos = useRef({ x: 0, y: 0 });
 
     const [Elements, SetElements] = useState({
@@ -34,6 +35,24 @@ export function useWhiteboard() {
     const [ToolActive, SetToolActive] = useState<ToolTypes>("Select");
     const [Saved, SetSaved] = useState(false);
     const [State, SetState] = useState<StateTypes>("Not Yet.");
+    const [Theme, SetTheme] = useState<"Light" | "Black">("Light");
+
+    const STICKIE_COLORS = [
+        "hsl(45, 80%, 90%)",
+        "hsl(150, 60%, 88%)",
+        "hsl(200, 70%, 88%)",
+        "hsl(320, 60%, 90%)",
+        "hsl(25, 80%, 90%)",
+        "hsl(0, 80%, 90%)",
+        "hsl(270, 80%, 90%)",
+        "hsl(225, 80%, 90%)",
+    ];
+
+    const switchTheme = () => {
+        const next = Theme === "Light" ? "Black" : "Light";
+        SetTheme(next);
+        document.documentElement.classList.toggle("Black", next === "Black");
+    };
 
     useEffect(() => {
         const handler = (e: KeyboardEvent) => {
@@ -71,6 +90,7 @@ export function useWhiteboard() {
     const onMouseDown = (e: React.MouseEvent) => {
         if (ToolActive === "Select" || ToolActive === "Hand") {
             isPanning.current = true;
+            didPan.current = false;
             lastPos.current = { x: e.clientX, y: e.clientY };
         } else if (ToolActive === "Sketch") {
             isDrawing.current = true;
@@ -81,6 +101,7 @@ export function useWhiteboard() {
 
     const onMouseMove = (e: React.MouseEvent) => {
         if (isPanning.current) {
+            didPan.current = true;
             SetPan((prev) => ({
                 x: prev.x + e.clientX - lastPos.current.x,
                 y: prev.y + e.clientY - lastPos.current.y,
@@ -106,17 +127,18 @@ export function useWhiteboard() {
     };
 
     function CheckStufff(e: React.MouseEvent) {
+        if (didPan.current) return;
         SetSaved((s) => !s);
         if (ItemSelected) {
             SetItemSelected(false);
             SetThingSelected(null);
             return;
         }
-        if (ToolActive === "Stickie") SpawnStickyNote(e);
+        if (ToolActive === "Stickie") SpawnStickie(e);
         else if (ToolActive === "Text") SpawnText(e);
     }
 
-    function SpawnStickyNote(e: React.MouseEvent) {
+    function SpawnStickie(e: React.MouseEvent) {
         if (e.target !== e.currentTarget) return;
         const { x, y } = getCanvasPos(e);
         SetElements((prev) => ({
@@ -128,11 +150,13 @@ export function useWhiteboard() {
                     y: y - NOTE_HEIGHT / 2,
                     content: "",
                     _id: Date.now(),
-                    bgcolor: "var(--Stickie)",
+                    bgcolor:
+                        STICKIE_COLORS[
+                            Math.floor(Math.random() * STICKIE_COLORS.length)
+                        ],
                 },
             ],
         }));
-        console.log(Elements);
     }
 
     function SpawnText(e: React.MouseEvent) {
@@ -151,7 +175,6 @@ export function useWhiteboard() {
                 },
             ],
         }));
-        console.log(Elements);
     }
 
     return {
@@ -176,5 +199,7 @@ export function useWhiteboard() {
         onMouseUp,
         onWheel,
         SetElements,
+        switchTheme,
+        SpawnStickie,
     };
 }
